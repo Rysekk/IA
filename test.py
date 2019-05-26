@@ -5,6 +5,7 @@ WIDTH = 1000
 HEIGHT = 1000
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 RED = (255,0,0)
+BLUE = (0,0,255)
 BLACK = (0,0,0)
 BG_COLOR = BLACK
 voiture_pos = [100, 100]
@@ -18,22 +19,25 @@ a_droite = False
 a_gauche = False
 en_haut = False
 en_bas = False
-angle = 0
+angle = -90
 
 
-#######pygame.draw.rect(screen, RED, (voiture_x, voiture_y, voiture_largeur, voiture_longueur))
 
 
-# define a surface (RECTANGLE)  
+# définie surface rectangle ou la voiture est dedans 
 voiture = pygame.Surface((voiture_largeur , voiture_longueur))
-# fill the rectangle / surface with green color  
+# couleur de la surface
 voiture.fill(BLACK)
-# define rect for placing the rectangle at the desired position  
-voiture_tourne = pygame.transform.rotate(voiture, angle)
+# frame suivante avec rotation 
+voiture_tourne = voiture.copy()
+# déssine la voiture
+pygame.draw.rect(voiture_tourne,RED, (1, 1, voiture_largeur,voiture_longueur))
 
 
 
 while not game_over:
+
+	#regarde les touches qu'on appui
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			sys.exit()
@@ -57,12 +61,25 @@ while not game_over:
 				en_haut = False
 			elif event.key == pygame.K_DOWN:
 				en_bas = False
+
+
+
+
+	# dessine la voiture
 	pygame.draw.rect(voiture,RED, (1, 1, voiture_largeur,voiture_longueur))
+	# efface tout
 	screen.fill(BG_COLOR)
 	# pygame.draw.rect(screen, RED, (voiture_x, voiture_y, voiture_largeur, voiture_longueur))
 	voiture_centre = (voiture_x - voiture_tourne.get_rect().width/2, voiture_y - voiture_tourne.get_rect().height/2)
+	# remplace l'ancienne image de la voiture par la nouvelle rotationné
 	screen.blit(voiture_tourne, voiture_centre)
+	# met à jour les bailles
 	pygame.display.update()
+
+
+
+
+	# action selon les touches appuiyé
 	if a_droite is True:
 		angle = (angle-3)%360
 		voiture_tourne = pygame.transform.rotate(voiture, -angle-90)
