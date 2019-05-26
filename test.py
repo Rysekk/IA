@@ -15,7 +15,7 @@ voiture_pos = [100, 100]
 voiture_largeur = 25
 voiture_longueur = 50
 game_over = False
-speed = 3
+speed = 2
 voiture_x = WIDTH/2
 voiture_y = HEIGHT/2
 a_droite = False
@@ -46,14 +46,14 @@ while not game_over:
 		if event.type == pygame.QUIT:
 			sys.exit()
 		if event.type == pygame.KEYDOWN:
-			if event.key == pygame.K_LEFT:
-				a_droite = True
-			elif event.key == pygame.K_RIGHT:
-				a_gauche = True
-			elif event.key == pygame.K_UP:
+			if event.key == pygame.K_UP:
 				en_haut = True
 			elif event.key == pygame.K_DOWN:
 				en_bas = True
+			elif event.key == pygame.K_LEFT :#and en_haut == True:
+				a_droite = True
+			elif event.key == pygame.K_RIGHT :#and en_haut == True:
+				a_gauche = True
 
 		#regarde les touche qu'on qu'on désappui
 		elif event.type == pygame.KEYUP:
@@ -102,9 +102,10 @@ while not game_over:
 		voiture_tourne = pygame.transform.rotate(voiture, -angle-90)
 
 	if  WIDTH < voiture_x or voiture_x < 0 or HEIGHT < voiture_y or voiture_y < 0:
-		# R = (R+54)%255
-		# V = (V+81)%255
-		# B = (B+103)%255
+		R = (R+54)%255
+		V = (V+81)%255
+		B = (B+103)%255
 		print("dehors")
 		voiture_x = WIDTH/2
 		voiture_y = HEIGHT/2
+		angle = -90
