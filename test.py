@@ -2,7 +2,7 @@ import pygame
 from math import *
 pygame.init()
 WIDTH = 1000
-HEIGHT = 1000
+HEIGHT = 600
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 RED = (255,0,0)
 BLUE = (0,0,255)
@@ -51,7 +51,7 @@ while not game_over:
 			elif event.key == pygame.K_DOWN:
 				en_bas = True
 
-
+		#regarde les touche qu'on qu'on désappui
 		elif event.type == pygame.KEYUP:
 			if event.key == pygame.K_LEFT:
 				a_droite = False
@@ -93,3 +93,8 @@ while not game_over:
 		voiture_x += speed * cos(angle / (180 / 3.14))
 	if en_bas is True:
 		voiture_y += speed
+
+	if  WIDTH < voiture_x or voiture_x < 0 or HEIGHT < voiture_y or voiture_y < 0:
+		print("dehors")
+		voiture_x = WIDTH/2
+		voiture_y = HEIGHT/2
