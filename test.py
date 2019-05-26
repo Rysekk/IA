@@ -9,8 +9,8 @@ BLUE = (0,0,255)
 BLACK = (0,0,0)
 BG_COLOR = BLACK
 voiture_pos = [100, 100]
-voiture_largeur = 100
-voiture_longueur = 250
+voiture_largeur = 50
+voiture_longueur = 100
 game_over = False
 speed = 6
 voiture_x = WIDTH/2
@@ -70,7 +70,9 @@ while not game_over:
 	# efface tout
 	screen.fill(BG_COLOR)
 	# pygame.draw.rect(screen, RED, (voiture_x, voiture_y, voiture_largeur, voiture_longueur))
-	voiture_centre = (voiture_x - voiture_tourne.get_rect().width/2, voiture_y - voiture_tourne.get_rect().height/2)
+	centre_x = voiture_x - voiture_tourne.get_rect().width/2
+	centre_y = voiture_y - voiture_tourne.get_rect().height/2
+	voiture_centre = (centre_x, centre_y)
 	# remplace l'ancienne image de la voiture par la nouvelle rotationné
 	screen.blit(voiture_tourne, voiture_centre)
 	# met à jour les bailles
