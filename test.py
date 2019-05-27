@@ -167,6 +167,8 @@ while not game_over:
 			print(event)
 			if event.button == 2:
 				en_haut = False
+				a_droite = False
+				a_gauche = False
 			if event.button == 1:
 				en_bas = False
 
