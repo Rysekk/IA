@@ -209,10 +209,11 @@ while not game_over:
 	rad = (angle-90)/ (180 / 3.14)
 	x = 1.1
 	pi = 3.14
-	voiture_angle1 = (voiture_x + cos(x+rad)*rayon, voiture_y + sin(x+rad)*rayon)
-	voiture_angle2 = (voiture_x + cos((pi-x)+rad)*rayon, voiture_y + sin((pi-x)+rad)*rayon)
-	voiture_angle3 = (voiture_x + cos(-x+rad)*rayon, voiture_y + sin(-x+rad)*rayon)
-	voiture_angle4 = (voiture_x + cos((pi+x)+rad)*rayon, voiture_y + sin((pi+x)+rad)*rayon)
+	décalage = 5
+	voiture_angle1 = (voiture_x-décalage + cos(x+rad)*rayon, voiture_y-décalage + sin(x+rad)*rayon)
+	voiture_angle2 = (voiture_x-décalage + cos((pi-x)+rad)*rayon, voiture_y-décalage + sin((pi-x)+rad)*rayon)
+	voiture_angle3 = (voiture_x-décalage + cos(-x+rad)*rayon, voiture_y-décalage + sin(-x+rad)*rayon)
+	voiture_angle4 = (voiture_x-décalage + cos((pi+x)+rad)*rayon, voiture_y-décalage + sin((pi+x)+rad)*rayon)
 	list_angle = [voiture_angle1,voiture_angle2,voiture_angle3, voiture_angle4]
 	pygame.draw.rect(screen, BLUE, (voiture_angle1[0], voiture_angle1[1], 10, 10))
 	pygame.draw.rect(screen, RED, (voiture_angle2[0], voiture_angle2[1], 10, 10))
@@ -275,7 +276,6 @@ while not game_over:
 		R = 0
 		V = 0
 		B = 255
-		print(str(dehors_compt))
 	elif dedans_compt >0:
 		R = 0
 		V = 255
