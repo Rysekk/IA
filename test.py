@@ -1,5 +1,6 @@
 import pygame
 from math import *
+import sys
 pygame.init()
 WIDTH = 1000
 HEIGHT = 600
@@ -9,6 +10,7 @@ V = 0
 B = 0
 RED = (255,0,0)
 BLUE = (0,0,255)
+GREEN = (0,255,0)
 BLACK = (0,0,0)
 WHITE = (255,255,255)
 BG_COLOR = BLACK
@@ -24,12 +26,19 @@ a_gauche = False
 en_haut = False
 en_bas = False
 angle = -90
-haut_gauche = (100,100)
-haut_droit = (300,100)
-bas_gauche = (100,300)
-bas_droit = (300,300)
-liste_point = [haut_gauche, haut_droit, bas_droit, bas_gauche]
-
+haut_gauche_ex = (10,10)
+haut_droit_ex = (990,10)
+bas_gauche_ex = (10,590)
+bas_droit_ex = (990,590)
+liste_point_exterieur = [haut_gauche_ex, haut_droit_ex, bas_droit_ex, bas_gauche_ex]
+haut_gauche_in = (100,100)
+haut_droit_in = (890,100)
+bas_gauche_in = (100,490)
+bas_droit_in = (890,490)
+liste_point_interieur = [haut_gauche_in, haut_droit_in, bas_droit_in, bas_gauche_in]
+Start_x = (10,295)
+Start_y = (100,295)
+liste_point_start = [Start_x,Start_y]
 
 
 # définie surface rectangle ou la voiture est dedans 
@@ -42,7 +51,10 @@ voiture_tourne = voiture.copy()
 # déssine la voiture
 RAINBOW = (R,V,B)
 pygame.draw.rect(voiture_tourne,RAINBOW, (1, 1, voiture_largeur,voiture_longueur))
-pygame.draw.lines(screen, WHITE, False, liste_point, 20)
+pygame.draw.lines(screen, GREEN, True, liste_point_start, 10)
+pygame.draw.lines(screen, WHITE, False, liste_point_exterieur, 10)
+pygame.draw.lines(screen, BLUE, False, liste_point_interieur, 10)
+
 
 
 
@@ -51,7 +63,7 @@ while not game_over:
 	#regarde les touches qu'on appui
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
-			sys.exit()
+			sys.exit(1)
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_UP:
 				en_haut = True
@@ -82,7 +94,9 @@ while not game_over:
 	
 	# efface tout
 	screen.fill(BG_COLOR)
-	pygame.draw.lines(screen, WHITE, True, liste_point, 20)
+	pygame.draw.lines(screen, GREEN, True, liste_point_start, 10)
+	pygame.draw.lines(screen, WHITE, True, liste_point_exterieur, 10)
+	pygame.draw.lines(screen, BLUE, True, liste_point_interieur, 10)
 	# pygame.draw.rect(screen, RED, (voiture_x, voiture_y, voiture_largeur, voiture_longueur))
 	centre_x = voiture_x - voiture_tourne.get_rect().width/2
 	centre_y = voiture_y - voiture_tourne.get_rect().height/2
@@ -120,6 +134,6 @@ while not game_over:
 		# V = B-V
 		# B = B-V
 		print("dehors")
-		voiture_x = WIDTH/2
-		voiture_y = HEIGHT/2
+		voiture_x = 55
+		voiture_y = 290
 		angle = -90
