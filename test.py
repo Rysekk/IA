@@ -1,6 +1,7 @@
 import pygame
 from math import *
 import sys
+import time
 pygame.init()
 WIDTH = 1200
 HEIGHT = 700
@@ -21,6 +22,8 @@ BG_COLOR = GREY
 
 
 #initialisation paramètre voiture
+arrive = True
+score = 0
 voiture_pos = [100, 100]
 voiture_largeur = 25
 voiture_longueur = 50
@@ -43,6 +46,7 @@ circuit_y = 50+trait_large
 route_T = 100
 c_droite = circuit_x + longeur_circuit
 c_bas = circuit_y + largeur_circuit
+c_milieu_hauteur = ((c_bas - route_T)/2) + circuit_y
 
 
 haut_gauche_ex = (circuit_x, circuit_y)
@@ -50,16 +54,27 @@ haut_droit_ex = (c_droite, circuit_y)
 bas_gauche_ex = (circuit_x, c_bas)
 bas_droit_ex = (c_droite, c_bas)
 
-
 liste_point_exterieur = [haut_gauche_ex, haut_droit_ex, bas_droit_ex, bas_gauche_ex]
+
+
+
 haut_gauche_in = (circuit_x + route_T, circuit_y + route_T)
 haut_droit_in = (c_droite - route_T, circuit_y + route_T)
 bas_gauche_in = (circuit_x + route_T, c_bas - route_T)
 bas_droit_in = (c_droite - route_T, c_bas - route_T)
+
 liste_point_interieur = [haut_gauche_in, haut_droit_in, bas_droit_in, bas_gauche_in]
-Start_x = (circuit_x,((c_bas - route_T)/2) + circuit_y)
-Start_y = (route_T+circuit_x,((c_bas - route_T)/2) + circuit_y)
-liste_point_start = [Start_x,Start_y]
+
+
+
+Start_p1 = (circuit_x, c_milieu_hauteur)
+Start_p2 = (route_T + circuit_x, c_milieu_hauteur)
+Milieu_p1 = (c_droite - route_T, c_milieu_hauteur)
+Milieu_p2 = (c_droite, c_milieu_hauteur)
+
+liste_point_start = [Start_p1,Start_p2]
+liste_point_milieu = [Milieu_p1, Milieu_p2]
+
 
 
 # définie surface rectangle ou la voiture est dedans 
@@ -123,6 +138,7 @@ while not game_over:
 	# efface tout
 	screen.fill(BG_COLOR)
 	pygame.draw.lines(screen, GREEN, True, liste_point_start, trait_large)
+	pygame.draw.lines(screen, GREEN, True, liste_point_milieu, trait_large)
 	pygame.draw.lines(screen, WHITE, True, liste_point_exterieur, trait_large)
 	pygame.draw.lines(screen, BLUE, True, liste_point_interieur, trait_large)
 	# pygame.draw.rect(screen, RED, (voiture_x, voiture_y, voiture_largeur, voiture_longueur))
@@ -159,13 +175,6 @@ while not game_over:
 		B = 255
 		print("dehors")
 	elif  c_droite - route_T > voiture_x and voiture_x > circuit_x + route_T and c_bas - route_T > voiture_y and voiture_y > circuit_y + route_T: 
-	# 	# change les couleurs
-	# 	R = R+B
-	# 	B = R-B
-	# 	R = R-B
-	# 	B = B+V
-	# 	V = B-V
-	# 	B = B-V
 		R = 0
 		V = 255
 		B = 0
@@ -174,3 +183,12 @@ while not game_over:
 		R = 255
 		V = 0
 		B = 0
+	if voiture_x > circuit_x and voiture_x < circuit_x+route_T and voiture_y > c_milieu_hauteur and voiture_y < c_milieu_hauteur + trait_large and arrive is False:
+		score = score+1
+		print(str(score))
+		arrive = True
+
+	elif voiture_x > c_droite - route_T and voiture_x < c_droite and voiture_y > c_milieu_hauteur and voiture_y < c_milieu_hauteur + trait_large and arrive is True:
+		score = score+1
+		print(str(score))
+		arrive = False
