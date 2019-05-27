@@ -43,9 +43,13 @@ voiture_largeur = 25
 voiture_longueur = 50
 game_over = False
 speed = 2
+
+
 voiture_x = circuit_x + route_T/2
 voiture_y = (c_bas - route_T)/2 + circuit_y + voiture_longueur
 angle = -90
+
+
 a_droite = False
 a_gauche = False
 en_haut = False
@@ -116,6 +120,7 @@ while not game_over:
 			sys.exit(1)
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_UP:
+				print(event)
 				en_haut = True
 			elif event.key == pygame.K_DOWN:
 				en_bas = True
@@ -129,10 +134,6 @@ while not game_over:
 				voiture_y = (c_bas - route_T)/2 + circuit_y + voiture_longueur
 				angle = -90
 				voiture_tourne = pygame.transform.rotate(voiture, -angle-90)
-		elif event.type == pygame.JOYBUTTONDOWN:
-			print(event)
-		elif event.type == pygame.JOYAXISMOTION:
-			print(event)
 
 
 		#regarde les touche qu'on qu'on désappui
@@ -145,6 +146,46 @@ while not game_over:
 				en_haut = False
 			elif event.key == pygame.K_DOWN:
 				en_bas = False
+
+
+
+		elif event.type == pygame.JOYBUTTONDOWN:
+			print(event)
+			if event.button == 2:
+				en_haut = True
+			elif event.button == 1:
+				en_bas = True
+			elif event.button == 9:
+				voiture_x = circuit_x + route_T/2
+				voiture_y = (c_bas - route_T)/2 + circuit_y + voiture_longueur
+				angle = -90
+				voiture_tourne = pygame.transform.rotate(voiture, -angle-90)
+
+
+
+		elif event.type == pygame.JOYBUTTONUP:
+			print(event)
+			if event.button == 2:
+				en_haut = False
+			if event.button == 1:
+				en_bas = False
+
+
+
+		elif event.type == pygame.JOYAXISMOTION:
+			if event.axis == 1:
+				print(event.value)
+				if en_haut is True:
+					if event.value < -0.001:
+						a_droite = True
+					elif event.value > 0.001:
+						a_gauche = True
+					else:
+						a_droite = False
+						a_gauche = False
+
+
+		
 
 
 
