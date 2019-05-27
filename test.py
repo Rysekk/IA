@@ -7,7 +7,7 @@ HEIGHT = 700
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 
 
-
+#couleur
 R = 254
 V = 0
 B = 0
@@ -16,10 +16,11 @@ BLUE = (0,0,255)
 GREEN = (0,255,0)
 BLACK = (0,0,0)
 WHITE = (255,255,255)
-BG_COLOR = BLACK
+GREY = (120,120,120)
+BG_COLOR = GREY
 
 
-
+#initialisation paramètre voiture
 voiture_pos = [100, 100]
 voiture_largeur = 25
 voiture_longueur = 50
@@ -33,6 +34,7 @@ en_haut = False
 en_bas = False
 angle = -90
 
+#initialisation paramètre circuit
 trait_large = 10
 largeur_circuit = 600
 longeur_circuit = 1000
@@ -92,6 +94,13 @@ while not game_over:
 				a_droite = True
 			elif event.key == pygame.K_RIGHT :#and en_haut == True: pour tourner seulement quand on avance
 				a_gauche = True
+			elif event.key == pygame.K_r :
+				#restart de la voiture
+				voiture_x = circuit_x + route_T/2
+				voiture_y = (c_bas - route_T)/2 + circuit_y + voiture_longueur
+				angle = -90
+				voiture_tourne = pygame.transform.rotate(voiture, -angle-90)
+
 
 		#regarde les touche qu'on qu'on désappui
 		elif event.type == pygame.KEYUP:
@@ -145,20 +154,10 @@ while not game_over:
 
 		# ramène la voiture au milieu quand elle sort
 	if  c_droite < voiture_x or voiture_x < circuit_x or c_bas < voiture_y or voiture_y < circuit_y: 
-		# change les couleurs
-		# R = R+B
-		# B = R-B
-		# R = R-B
-		# B = B+V
-		# V = B-V
-		# B = B-V
 		R = 0
 		V = 0
 		B = 255
 		print("dehors")
-		# voiture_x = 55
-		# voiture_y = 290
-		# angle = -90
 	elif  c_droite - route_T > voiture_x and voiture_x > circuit_x + route_T and c_bas - route_T > voiture_y and voiture_y > circuit_y + route_T: 
 	# 	# change les couleurs
 	# 	R = R+B
@@ -168,17 +167,10 @@ while not game_over:
 	# 	V = B-V
 	# 	B = B-V
 		R = 0
-		V = 0
-		B = 255
-		print("dehors")
-		# voiture_x = 55
-		# voiture_y = 290
-		# angle = -90
+		V = 255
+		B = 0
+		print("dedans")
 	else:
 		R = 255
 		V = 0
 		B = 0
-	# 	print("dehors")
-	# 	# voiture_x = 55
-	# 	# voiture_y = 290
-	# 	# angle = -90
