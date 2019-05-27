@@ -21,24 +21,6 @@ GREY = (120,120,120)
 BG_COLOR = GREY
 
 
-#initialisation paramètre voiture
-dehors = False
-dedans = False
-arrive = True
-score = 0
-voiture_pos = [100, 100]
-voiture_largeur = 25
-voiture_longueur = 50
-game_over = False
-speed = 2
-voiture_x = WIDTH/2
-voiture_y = HEIGHT/2
-a_droite = False
-a_gauche = False
-en_haut = False
-en_bas = False
-angle = -90
-
 #initialisation paramètre circuit
 trait_large = 10
 largeur_circuit = 600
@@ -50,6 +32,28 @@ c_droite = circuit_x + longeur_circuit
 c_bas = circuit_y + largeur_circuit
 c_milieu_hauteur = ((c_bas - route_T)/2) + circuit_y
 
+
+#initialisation paramètre voiture
+dehors = False
+dedans = False
+arrive = True
+score = 0
+voiture_pos = [100, 100]
+voiture_largeur = 25
+voiture_longueur = 50
+game_over = False
+speed = 2
+voiture_x = circuit_x + route_T/2
+voiture_y = (c_bas - route_T)/2 + circuit_y + voiture_longueur
+angle = -90
+a_droite = False
+a_gauche = False
+en_haut = False
+en_bas = False
+
+
+
+#circuit responsive
 
 haut_gauche_ex = (circuit_x, circuit_y)
 haut_droit_ex = (c_droite, circuit_y)
