@@ -99,10 +99,8 @@ pygame.draw.rect(voiture_tourne,RAINBOW, (1, 1, voiture_largeur,voiture_longueur
 pygame.draw.lines(screen, GREEN, True, liste_point_start, trait_large)
 pygame.draw.lines(screen, WHITE, False, liste_point_exterieur, trait_large)
 pygame.draw.lines(screen, BLUE, False, liste_point_interieur, trait_large)
-
-
-stick = pygame.joystick.Joystick(0)
-stick.init()
+pygame.joystick.init()
+stick = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
 
 
 while not game_over:
