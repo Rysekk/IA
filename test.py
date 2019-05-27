@@ -34,8 +34,6 @@ c_milieu_hauteur = ((c_bas - route_T)/2) + circuit_y
 
 
 #initialisation paramètre voiture
-dehors = False
-dedans = False
 arrive = True
 score = 0
 voiture_pos = [100, 100]
@@ -43,10 +41,11 @@ voiture_largeur = 25
 voiture_longueur = 50
 game_over = False
 speed = 2
+rayon = sqrt(((voiture_longueur/2) * (voiture_longueur/2)) + ((voiture_largeur/2) * (voiture_largeur/2)))
 
 
-voiture_x = circuit_x + route_T/2
-voiture_y = (c_bas - route_T)/2 + circuit_y + voiture_longueur
+voiture_x = int(circuit_x + route_T/2)
+voiture_y = int((c_bas - route_T)/2 + circuit_y + voiture_longueur)
 angle = -90
 
 
@@ -104,23 +103,15 @@ pygame.draw.lines(screen, BLUE, False, liste_point_interieur, trait_large)
 
 stick = pygame.joystick.Joystick(0)
 stick.init()
-#get init returns always False
-print("initialized:",bool(stick.get_init()))
-#getting the name works as it should
-print(stick.get_name())
-#says always "pygame.error: Joystick not initialized"
-print("axis_0",stick.get_axis(0)) 
 
 
 while not game_over:
 	#regarde les touches qu'on appui
 	for event in pygame.event.get():
-		print(event)
 		if event.type == pygame.QUIT:
 			sys.exit(1)
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_UP:
-				print(event)
 				en_haut = True
 			elif event.key == pygame.K_DOWN:
 				en_bas = True
@@ -201,7 +192,7 @@ while not game_over:
 	# dessine la voiture
 	RAINBOW = (R,V,B)
 	pygame.draw.rect(voiture,RAINBOW, (1, 1, voiture_largeur,voiture_longueur))
-	
+	pygame.draw.rect(screen,BLUE,(voiture_x,voiture_y,voiture_largeur,voiture_longueur))
 	# efface tout
 	screen.fill(BG_COLOR)
 	pygame.draw.lines(screen, GREEN, True, liste_point_start, trait_large)
@@ -213,6 +204,23 @@ while not game_over:
 	centre_y = voiture_y - voiture_tourne.get_rect().height/2
 	voiture_centre = (centre_x, centre_y)
 	# remplace l'ancienne image de la voiture par la nouvelle rotationné
+
+	rad_angle = angle/ (180 / 3.14)
+	rad = (angle-90)/ (180 / 3.14)
+	x = 1.1
+	pi = 3.14
+	voiture_angle1 = (voiture_x + cos(x+rad)*rayon, voiture_y + sin(x+rad)*rayon)
+	voiture_angle2 = (voiture_x + cos((pi-x)+rad)*rayon, voiture_y + sin((pi-x)+rad)*rayon)
+	voiture_angle3 = (voiture_x + cos(-x+rad)*rayon, voiture_y + sin(-x+rad)*rayon)
+	voiture_angle4 = (voiture_x + cos((pi+x)+rad)*rayon, voiture_y + sin((pi+x)+rad)*rayon)
+	list_angle = [voiture_angle1,voiture_angle2,voiture_angle3, voiture_angle4]
+	pygame.draw.rect(screen, BLUE, (voiture_angle1[0], voiture_angle1[1], 10, 10))
+	pygame.draw.rect(screen, RED, (voiture_angle2[0], voiture_angle2[1], 10, 10))
+	pygame.draw.rect(screen, BLACK, (voiture_angle3[0], voiture_angle3[1], 10, 10))
+	pygame.draw.rect(screen, WHITE, (voiture_angle4[0], voiture_angle4[1], 10, 10))
+
+
+
 	screen.blit(voiture_tourne, voiture_centre)
 	# met à jour les bailles
 	pygame.display.update()
@@ -228,33 +236,23 @@ while not game_over:
 		angle = (angle+2)%360
 		voiture_tourne = pygame.transform.rotate(voiture, -angle-90)
 	if en_haut is True:
-		voiture_y += speed * sin(angle / (180 / 3.14))
-		voiture_x += speed * cos(angle / (180 / 3.14))
+		voiture_y += speed * sin(rad_angle)
+		voiture_x += speed * cos(rad_angle)
 		voiture_tourne = pygame.transform.rotate(voiture, -angle-90)
 	if en_bas is True:
 		voiture_y += speed
 		voiture_tourne = pygame.transform.rotate(voiture, -angle-90)
 
 		# colision extérieur et intérieur
-	if  c_droite < voiture_x or voiture_x < circuit_x or c_bas < voiture_y or voiture_y < circuit_y: 
-		R = 0
-		V = 0
-		B = 255
-		if dehors is False:
-			print("dehors")
-			dehors = True
-	elif  c_droite - route_T > voiture_x and voiture_x > circuit_x + route_T and c_bas - route_T > voiture_y and voiture_y > circuit_y + route_T: 
-		R = 0
-		V = 255
-		B = 0
-		if dedans is False:
-			print("dedans")
-			dedans = True
-	else:
-		dehors = False
-		dedans = False
+	dehors_compt = 0
+	dedans_compt = 0
+	for angles in list_angle:
+		if  c_droite < angles[0] or angles[0] < circuit_x or c_bas < angles[1] or angles[1] < circuit_y: 
+				dehors_compt = dehors_compt+1
+		elif  c_droite - route_T > angles[0] and angles[0] > circuit_x + route_T and c_bas - route_T > angles[1] and angles[1] > circuit_y + route_T: 
+				dedans_compt = dedans_compt+1
 		#ligne d'arrivé et ligne du milieu de course
-		if voiture_x > circuit_x and voiture_x < circuit_x+route_T and voiture_y > c_milieu_hauteur and voiture_y < c_milieu_hauteur + 50:#trait_large:
+		if angles[0] > circuit_x and angles[0] < circuit_x+route_T and angles[1] > c_milieu_hauteur and angles[1] < c_milieu_hauteur + 50:#trait_large:
 			if arrive is False:
 				score = score+1
 				print("tour n°"+str(score))
@@ -262,7 +260,7 @@ while not game_over:
 			R = 255
 			V = 255
 			B = 255
-		elif voiture_x > c_droite - route_T and voiture_x < c_droite and voiture_y > c_milieu_hauteur and voiture_y < c_milieu_hauteur + 50:#trait_large:
+		elif angles[0] > c_droite - route_T and angles[0] < c_droite and angles[1] > c_milieu_hauteur and angles[1] < c_milieu_hauteur + 50:#trait_large:
 			if arrive is True:
 				print("milieu du tour n°"+str(score))
 				arrive = False
@@ -273,3 +271,17 @@ while not game_over:
 			R = 255
 			V = 0
 			B = 0
+	if dehors_compt > 0:
+		R = 0
+		V = 0
+		B = 255
+		print(str(dehors_compt))
+	elif dedans_compt >0:
+		R = 0
+		V = 255
+		B = 0
+	else:
+		R = 255
+		V = 0
+		B = 0
+
