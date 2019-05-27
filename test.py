@@ -113,9 +113,9 @@ print("axis_0",stick.get_axis(0))
 
 
 while not game_over:
-
 	#regarde les touches qu'on appui
 	for event in pygame.event.get():
+		print(event)
 		if event.type == pygame.QUIT:
 			sys.exit(1)
 		if event.type == pygame.KEYDOWN:
@@ -150,7 +150,6 @@ while not game_over:
 
 
 		elif event.type == pygame.JOYBUTTONDOWN:
-			print(event)
 			if event.button == 2:
 				en_haut = True
 			elif event.button == 1:
@@ -164,7 +163,6 @@ while not game_over:
 
 
 		elif event.type == pygame.JOYBUTTONUP:
-			print(event)
 			if event.button == 2:
 				en_haut = False
 				a_droite = False
@@ -176,7 +174,6 @@ while not game_over:
 
 		elif event.type == pygame.JOYAXISMOTION:
 			if event.axis == 1:
-				print(event.value)
 				if en_haut is True:
 					if event.value < -0.001:
 						a_droite = True
@@ -185,7 +182,16 @@ while not game_over:
 					else:
 						a_droite = False
 						a_gauche = False
-
+		elif event.type == pygame.JOYHATMOTION:
+			if event.value == (-1,0):
+				a_droite = True
+				a_gauche = False
+			elif event.value == (1,0):
+				a_gauche = True
+				a_droite = False
+			else:
+				a_droite = False
+				a_gauche  = False
 
 		
 
