@@ -22,6 +22,8 @@ BG_COLOR = GREY
 
 
 #initialisation paramètre voiture
+dehors = False
+dedans = False
 arrive = True
 score = 0
 voiture_pos = [100, 100]
@@ -168,27 +170,41 @@ while not game_over:
 		voiture_y += speed
 		voiture_tourne = pygame.transform.rotate(voiture, -angle-90)
 
-		# ramène la voiture au milieu quand elle sort
+		# colision extérieur et intérieur
 	if  c_droite < voiture_x or voiture_x < circuit_x or c_bas < voiture_y or voiture_y < circuit_y: 
 		R = 0
 		V = 0
 		B = 255
-		print("dehors")
+		if dehors is False:
+			print("dehors")
+			dehors = True
 	elif  c_droite - route_T > voiture_x and voiture_x > circuit_x + route_T and c_bas - route_T > voiture_y and voiture_y > circuit_y + route_T: 
 		R = 0
 		V = 255
 		B = 0
-		print("dedans")
+		if dedans is False:
+			print("dedans")
+			dedans = True
 	else:
-		R = 255
-		V = 0
-		B = 0
-	if voiture_x > circuit_x and voiture_x < circuit_x+route_T and voiture_y > c_milieu_hauteur and voiture_y < c_milieu_hauteur + trait_large and arrive is False:
-		score = score+1
-		print(str(score))
-		arrive = True
-
-	elif voiture_x > c_droite - route_T and voiture_x < c_droite and voiture_y > c_milieu_hauteur and voiture_y < c_milieu_hauteur + trait_large and arrive is True:
-		score = score+1
-		print(str(score))
-		arrive = False
+		dehors = False
+		dedans = False
+		#ligne d'arrivé et ligne du milieu de course
+		if voiture_x > circuit_x and voiture_x < circuit_x+route_T and voiture_y > c_milieu_hauteur and voiture_y < c_milieu_hauteur + 50:#trait_large:
+			if arrive is False:
+				score = score+1
+				print("tour n°"+str(score))
+				arrive = True
+			R = 255
+			V = 255
+			B = 255
+		elif voiture_x > c_droite - route_T and voiture_x < c_droite and voiture_y > c_milieu_hauteur and voiture_y < c_milieu_hauteur + 50:#trait_large:
+			if arrive is True:
+				print("milieu du tour n°"+str(score))
+				arrive = False
+			R = 255
+			V = 255
+			B = 255
+		else:
+			R = 255
+			V = 0
+			B = 0
