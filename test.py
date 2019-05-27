@@ -98,6 +98,14 @@ pygame.draw.lines(screen, WHITE, False, liste_point_exterieur, trait_large)
 pygame.draw.lines(screen, BLUE, False, liste_point_interieur, trait_large)
 
 
+stick = pygame.joystick.Joystick(0)
+stick.init()
+#get init returns always False
+print("initialized:",bool(stick.get_init()))
+#getting the name works as it should
+print(stick.get_name())
+#says always "pygame.error: Joystick not initialized"
+print("axis_0",stick.get_axis(0)) 
 
 
 while not game_over:
@@ -121,6 +129,10 @@ while not game_over:
 				voiture_y = (c_bas - route_T)/2 + circuit_y + voiture_longueur
 				angle = -90
 				voiture_tourne = pygame.transform.rotate(voiture, -angle-90)
+		elif event.type == pygame.JOYBUTTONDOWN:
+			print(event)
+		elif event.type == pygame.JOYAXISMOTION:
+			print(event)
 
 
 		#regarde les touche qu'on qu'on désappui
