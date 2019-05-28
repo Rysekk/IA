@@ -40,6 +40,8 @@ voiture_pos = [100, 100]
 voiture_largeur = 25
 voiture_longueur = 50
 game_over = False
+distance_vision = 100
+angle_vision = [0, 45, 90, 135, 180]
 speed = 2
 rayon = sqrt(((voiture_longueur/2) * (voiture_longueur/2)) + ((voiture_largeur/2) * (voiture_largeur/2)))
 
@@ -90,7 +92,7 @@ liste_point_milieu = [Milieu_p1, Milieu_p2]
 voiture = pygame.Surface((voiture_largeur , voiture_longueur),pygame.SRCALPHA, 32)
 voiture = voiture.convert_alpha()
 # couleur de la surface
-voiture.fill(BLACK)
+# voiture.fill(BLACK)
 # frame suivante avec rotation 
 voiture_tourne = voiture.copy()
 # déssine la voiture
@@ -207,18 +209,28 @@ while not game_over:
 	rad = (angle-90)/ (180 / 3.14)
 	x = 1.1
 	pi = 3.14
-	décalage = 5
+	décalage = 3
+	taille_angle_voiture = 10
+	# position angulaire des 4 coins de la voiture
 	voiture_angle1 = (voiture_x-décalage + cos(x+rad)*rayon, voiture_y-décalage + sin(x+rad)*rayon)
 	voiture_angle2 = (voiture_x-décalage + cos((pi-x)+rad)*rayon, voiture_y-décalage + sin((pi-x)+rad)*rayon)
 	voiture_angle3 = (voiture_x-décalage + cos(-x+rad)*rayon, voiture_y-décalage + sin(-x+rad)*rayon)
 	voiture_angle4 = (voiture_x-décalage + cos((pi+x)+rad)*rayon, voiture_y-décalage + sin((pi+x)+rad)*rayon)
-	list_angle = [voiture_angle1,voiture_angle2,voiture_angle3, voiture_angle4]
-	pygame.draw.rect(screen, BLUE, (voiture_angle1[0], voiture_angle1[1], 10, 10))
-	pygame.draw.rect(screen, RED, (voiture_angle2[0], voiture_angle2[1], 10, 10))
-	pygame.draw.rect(screen, BLACK, (voiture_angle3[0], voiture_angle3[1], 10, 10))
-	pygame.draw.rect(screen, WHITE, (voiture_angle4[0], voiture_angle4[1], 10, 10))
-
-
+	list_angle_voiture = [voiture_angle1,voiture_angle2,voiture_angle3, voiture_angle4]
+	# pygame.draw.rect(screen, BLUE, (voiture_angle1[0], voiture_angle1[1], taille_angle_voiture, taille_angle_voiture))
+	# pygame.draw.rect(screen, RED, (voiture_angle2[0], voiture_angle2[1], taille_angle_voiture, taille_angle_voiture))
+	# pygame.draw.rect(screen, BLACK, (voiture_angle3[0], voiture_angle3[1], taille_angle_voiture, taille_angle_voiture))
+	# pygame.draw.rect(screen, WHITE, (voiture_angle4[0], voiture_angle4[1], taille_angle_voiture, taille_angle_voiture))
+	# pygame.draw.rect(screen,BLUE,(voiture_x - voiture_largeur/2,voiture_y - voiture_longueur/2,voiture_largeur,voiture_longueur))
+	# pygame.draw.rect(screen, WHITE, (voiture_x-décalage, voiture_y-décalage, 5, 5))
+	centre_voiture = (voiture_x, voiture_y)
+	for truc in angle_vision :
+		rad_vision = truc/ (180 / 3.14)
+		p2_x = centre_voiture[0] + cos(rad_vision+rad)*distance_vision
+		p2_y = centre_voiture[1] + sin(rad_vision+rad)*distance_vision
+		p2 = (p2_x, p2_y)
+		pygame.draw.line(screen, WHITE, centre_voiture, p2, 5)
+		pygame.draw.rect(screen, BLUE, (p2[0], p2[1], 5,5))
 
 	screen.blit(voiture_tourne, voiture_centre)
 	# met à jour les bailles
@@ -245,7 +257,7 @@ while not game_over:
 		# colision extérieur et intérieur
 	dehors_compt = 0
 	dedans_compt = 0
-	for angles in list_angle:
+	for angles in list_angle_voiture:
 		if  c_droite < angles[0] or angles[0] < circuit_x or c_bas < angles[1] or angles[1] < circuit_y: 
 				dehors_compt = dehors_compt+1
 		elif  c_droite - route_T > angles[0] and angles[0] > circuit_x + route_T and c_bas - route_T > angles[1] and angles[1] > circuit_y + route_T: 
@@ -282,4 +294,3 @@ while not game_over:
 		R = 255
 		V = 0
 		B = 0
-
