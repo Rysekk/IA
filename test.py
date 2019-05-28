@@ -40,7 +40,7 @@ voiture_pos = [100, 100]
 voiture_largeur = 25
 voiture_longueur = 50
 game_over = False
-distance_vision = 100
+distance_vision = 1200
 angle_vision = [0, 45, 90, 135, 180]
 speed = 2
 rayon = sqrt(((voiture_longueur/2) * (voiture_longueur/2)) + ((voiture_largeur/2) * (voiture_largeur/2)))
@@ -70,7 +70,6 @@ ligne_ext1 = [haut_gauche_ex, haut_droit_ex]
 ligne_ext2 = [haut_droit_ex, bas_droit_ex]
 ligne_ext3 = [bas_droit_ex, bas_gauche_ex]
 ligne_ext4 = [bas_gauche_ex, haut_gauche_ex]
-liste_ligne_ext = [ligne_ext1, ligne_ext2, ligne_ext3, ligne_ext4]
 
 
 haut_gauche_in = (circuit_x + route_T, circuit_y + route_T)
@@ -83,7 +82,7 @@ ligne_inté1 = [haut_gauche_in, haut_droit_in]
 ligne_inté2 = [haut_droit_in, bas_droit_in]
 ligne_inté3 = [bas_droit_in, bas_gauche_in]
 ligne_inté4 = [bas_gauche_in, haut_gauche_in]
-liste_ligne_in = [ligne_inté1, ligne_inté2, ligne_inté3, ligne_inté4]
+liste_ligne = [ligne_ext1, ligne_ext2, ligne_ext3, ligne_ext4, ligne_inté1, ligne_inté2, ligne_inté3, ligne_inté4]
 
 
 Start_p1 = (circuit_x, c_milieu_hauteur)
@@ -243,8 +242,10 @@ while not game_over:
 		p2_x = centre_voiture[0] + cos(rad_vision+rad)*distance_vision
 		p2_y = centre_voiture[1] + sin(rad_vision+rad)*distance_vision
 		p2 = (p2_x, p2_y)
-		pygame.draw.line(screen, WHITE, centre_voiture, p2, 5)
-		
+		pygame.draw.line(screen, WHITE, centre_voiture, p2, 2)
+		pygame.draw.rect(screen, BLUE, (p2[0], p2[1], 5, 5))
+		# for ligne in liste_ligne :
+
 
 
 
