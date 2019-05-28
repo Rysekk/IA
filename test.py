@@ -66,7 +66,11 @@ bas_gauche_ex = (circuit_x, c_bas)
 bas_droit_ex = (c_droite, c_bas)
 
 liste_point_exterieur = [haut_gauche_ex, haut_droit_ex, bas_droit_ex, bas_gauche_ex]
-
+ligne_ext1 = [haut_gauche_ex, haut_droit_ex]
+ligne_ext2 = [haut_droit_ex, bas_droit_ex]
+ligne_ext3 = [bas_droit_ex, bas_gauche_ex]
+ligne_ext4 = [bas_gauche_ex, haut_gauche_ex]
+liste_ligne_ext = [ligne_ext1, ligne_ext2, ligne_ext3, ligne_ext4]
 
 
 haut_gauche_in = (circuit_x + route_T, circuit_y + route_T)
@@ -75,7 +79,11 @@ bas_gauche_in = (circuit_x + route_T, c_bas - route_T)
 bas_droit_in = (c_droite - route_T, c_bas - route_T)
 
 liste_point_interieur = [haut_gauche_in, haut_droit_in, bas_droit_in, bas_gauche_in]
-
+ligne_inté1 = [haut_gauche_in, haut_droit_in]
+ligne_inté2 = [haut_droit_in, bas_droit_in]
+ligne_inté3 = [bas_droit_in, bas_gauche_in]
+ligne_inté4 = [bas_gauche_in, haut_gauche_in]
+liste_ligne_in = [ligne_inté1, ligne_inté2, ligne_inté3, ligne_inté4]
 
 
 Start_p1 = (circuit_x, c_milieu_hauteur)
@@ -223,6 +231,12 @@ while not game_over:
 	# pygame.draw.rect(screen, WHITE, (voiture_angle4[0], voiture_angle4[1], taille_angle_voiture, taille_angle_voiture))
 	# pygame.draw.rect(screen,BLUE,(voiture_x - voiture_largeur/2,voiture_y - voiture_longueur/2,voiture_largeur,voiture_longueur))
 	# pygame.draw.rect(screen, WHITE, (voiture_x-décalage, voiture_y-décalage, 5, 5))
+
+
+
+
+
+	#vision
 	centre_voiture = (voiture_x, voiture_y)
 	for truc in angle_vision :
 		rad_vision = truc/ (180 / 3.14)
@@ -230,11 +244,18 @@ while not game_over:
 		p2_y = centre_voiture[1] + sin(rad_vision+rad)*distance_vision
 		p2 = (p2_x, p2_y)
 		pygame.draw.line(screen, WHITE, centre_voiture, p2, 5)
-		pygame.draw.rect(screen, BLUE, (p2[0], p2[1], 5,5))
+		
+
+
+
+
 
 	screen.blit(voiture_tourne, voiture_centre)
 	# met à jour les bailles
 	pygame.display.update()
+
+
+
 
 
 
