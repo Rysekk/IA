@@ -1,0 +1,74 @@
+
+	Main:
+
+On crée 50 réseau de neurones avec des poids aléatoires
+pour chaque réseau on lance la fonction modèlephysique(tableau[poids du réseau])
+elle va donné le fitness de chaque réseau
+on montre avec la fonction show(tableau[poids meilleur réseau]) le meilleur résultat
+on les tri et on mute les meilleur et on relance avec les enfants des meilleurs qui sont mutés
+
+
+	Réseau de neuronne:
+
+initialisation:
+tout les poids du réseau
+
+Entrées:
+
+visions: 8 distances float
+angle de la voiture float
+esqu'une porte a été traversée booléen
+esque la voiture est sortie de la route booléen
+
+Sorties:
+bouton à droite enfoncé booléen
+bouton à gauche enfoncé booléen
+
+Garde en mémoire :
+le nombre de récompense
+les décisions prise par le réseau liste[(bool gauche, bool droite)]
+le poids des neuronnes
+
+Condition:
+Si tu sort de la route t'es mort
+si tu n'a pas atteint de porte pendant plus de 20 second t'es mort
+la simultation dur au maximum 1 minutes
+
+
+
+
+	Modèle physique:
+
+
+
+c'est une fonction qui a pour
+
+Entrées:
+**? hypothèse ?** tout les poids du réseau
+bouton à droite enfoncé/pas enfoncé
+bouton à gauche enfoncé/pas enfoncé
+précèdente position x int
+précèdente position y int
+précèdente vitesse x float
+précèdente vitesse y float
+
+Sorties:
+suivante position x int
+suivante position y int
+suivante vitesse x float
+suivante vitesse y float
+nouvelles visions: 8 distances float
+
+
+
+	Première étape:
+
+
+on lance 50 voitures en même temps avec des poids aléatoires
+on selectionne les 5 meilleurs par rapport au fitness
+on génère 10 enfants avec un poid aléatoire muté par parent
+
+
+ 
+
+
