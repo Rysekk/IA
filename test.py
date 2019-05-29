@@ -116,8 +116,8 @@ pygame.draw.lines(screen, BLUE, False, liste_point_interieur, trait_large)
 
 
 pygame.joystick.init()
-stick = [pygame.joystick.Joystick(x) for _x in range(pygame.joystick.get_count())]
-
+stick = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
+stick[0].init()
 
 while not game_over:
 	#regarde les touches qu'on appui
@@ -178,14 +178,14 @@ while not game_over:
 
 
 		elif event.type == pygame.JOYAXISMOTION:
-			if event.axis == 1:
+			if event.axis == 0:
 				if en_haut is True:
 					if event.value < -0.001:
 						a_droite = True
-						intensité = -envent.value*2
+						intensité = -event.value*2
 					elif event.value > 0.001:
 						a_gauche = True
-						intensité = envent.value*2
+						intensité = event.value*2
 					else:
 						a_droite = False
 						a_gauche = False
