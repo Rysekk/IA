@@ -116,8 +116,7 @@ pygame.draw.lines(screen, BLUE, False, liste_point_interieur, trait_large)
 
 
 pygame.joystick.init()
-stick = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
-stick[0].init()
+stick = [pygame.joystick.Joystick(x).init() for x in range(pygame.joystick.get_count())]
 
 while not game_over:
 	#regarde les touches qu'on appui
