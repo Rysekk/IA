@@ -16,6 +16,7 @@ BLUE = (0,0,255)
 GREEN = (0,255,0)
 BLACK = (0,0,0)
 WHITE = (255,255,255)
+ORANGE = (255,255,0)
 GREY = (120,120,120)
 BG_COLOR = GREY
 
@@ -40,7 +41,7 @@ voiture_largeur = 25
 voiture_longueur = 50
 game_over = False
 distance_vision = 200
-nb_angle_vision = 100
+nb_angle_vision = 10
 speed = 2
 rayon = sqrt(((voiture_longueur/2) * (voiture_longueur/2)) + ((voiture_largeur/2) * (voiture_largeur/2)))
 
@@ -67,7 +68,7 @@ bas_droit_ex = (c_droite, c_bas)
 liste_point_exterieur = [haut_gauche_ex, haut_droit_ex, bas_droit_ex, bas_gauche_ex]
 ligne_ext1 = [haut_gauche_ex, haut_droit_ex]
 ligne_ext2 = [haut_droit_ex, bas_droit_ex]
-ligne_ext3 = [bas_droit_ex, bas_gauche_ex]
+ligne_ext3 = [bas_gauche_ex, bas_droit_ex]
 ligne_ext4 = [bas_gauche_ex, haut_gauche_ex]
 
 
@@ -79,7 +80,7 @@ bas_droit_in = (c_droite - route_T, c_bas - route_T)
 liste_point_interieur = [haut_gauche_in, haut_droit_in, bas_droit_in, bas_gauche_in]
 ligne_inté1 = [haut_gauche_in, haut_droit_in]
 ligne_inté2 = [haut_droit_in, bas_droit_in]
-ligne_inté3 = [bas_droit_in, bas_gauche_in]
+ligne_inté3 = [bas_gauche_in, bas_droit_in]
 ligne_inté4 = [bas_gauche_in, haut_gauche_in]
 liste_ligne = [ligne_ext1, ligne_ext2, ligne_ext3, ligne_ext4, ligne_inté1, ligne_inté2, ligne_inté3, ligne_inté4]
 
@@ -107,8 +108,11 @@ pygame.draw.rect(voiture_tourne,RAINBOW, (1, 1, voiture_largeur,voiture_longueur
 pygame.draw.lines(screen, GREEN, True, liste_point_start, trait_large)
 pygame.draw.lines(screen, WHITE, False, liste_point_exterieur, trait_large)
 pygame.draw.lines(screen, BLUE, False, liste_point_interieur, trait_large)
+
+
+
 pygame.joystick.init()
-stick = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
+stick = [pygame.joystick.Joystick(x) for _x in range(pygame.joystick.get_count())]
 
 
 while not game_over:
@@ -205,6 +209,8 @@ while not game_over:
 	pygame.draw.lines(screen, GREEN, True, liste_point_milieu, trait_large)
 	pygame.draw.lines(screen, WHITE, True, liste_point_exterieur, trait_large)
 	pygame.draw.lines(screen, BLUE, True, liste_point_interieur, trait_large)
+
+
 	# pygame.draw.rect(screen, RED, (voiture_x, voiture_y, voiture_largeur, voiture_longueur))
 	centre_x = voiture_x - voiture_tourne.get_rect().width/2
 	centre_y = voiture_y - voiture_tourne.get_rect().height/2
@@ -242,9 +248,38 @@ while not game_over:
 		p2_x = centre_voiture[0] + cos(rad_vision+rad)*distance_vision
 		p2_y = centre_voiture[1] + sin(rad_vision+rad)*distance_vision
 		p2 = (p2_x, p2_y)
+		for ligne in liste_ligne :
+			x1 = voiture_x
+			y1 = voiture_y
+			x2 = p2_x
+			y2 = p2_y
+			x3 = ligne[0][0]
+			y3 = ligne[0][1]
+			x4 = ligne[1][0]
+			y4 = ligne[1][1]
+			distance_centre = distance_vision
+			if x2 == x1:
+				coef1 = 10000000000
+			else:
+				coef1 = (y2 - y1)/(x2 - x1)
+			if x4 == x3:
+				coef2 = 10000000000
+			else:
+				coef2 = (y4 - y3)/(x4 - x3)
+			ord1 = (-x1*coef1) + y1
+			ord2 = (-x3*coef2) + y3
+			if coef1 == coef2 :
+				para = True
+			else:
+				inter_x = (ord2 - ord1)/(coef1-coef2)
+				inter_y = coef1*inter_x + ord1
+				inter = (inter_x,inter_y)
+				new_dist = sqrt((voiture_x - inter_x)*(voiture_x - inter_x) + (voiture_y - inter_y)*(voiture_y - inter_y))
+				if new_dist < distance_centre and inter_x >= x3 and inter_x <= x4 and inter_y >= y3 and inter_y <= y4:
+					p2 = inter
+				# print("intersection", inter_x, inter_y)
 		pygame.draw.line(screen, WHITE, centre_voiture, p2, 2)
 		pygame.draw.rect(screen, BLUE, (p2[0], p2[1], 5, 5))
-		# for ligne in liste_ligne :
 
 
 
@@ -288,14 +323,14 @@ while not game_over:
 		if angles[0] > circuit_x and angles[0] < circuit_x+route_T and angles[1] > c_milieu_hauteur and angles[1] < c_milieu_hauteur + 50:#trait_large:
 			if arrive is False:
 				score = score+1
-				print("tour n°"+str(score))
+				print("tour n°",score)
 				arrive = True
 			R = 255
 			V = 255
 			B = 255
 		elif angles[0] > c_droite - route_T and angles[0] < c_droite and angles[1] > c_milieu_hauteur and angles[1] < c_milieu_hauteur + 50:#trait_large:
 			if arrive is True:
-				print("milieu du tour n°"+str(score))
+				print("milieu du tour n°",score)
 				arrive = False
 			R = 255
 			V = 255
