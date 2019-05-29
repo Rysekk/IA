@@ -279,11 +279,13 @@ while not game_over:
 				pos2 = inter_x < x1 and inter_x > x2 and inter_y < y1 and inter_y > y2
 				pos3 = inter_x < x1 and inter_x > x2 and inter_y > y1 and inter_y < y2
 				pos4 = inter_x > x1 and inter_x < x2 and inter_y < y1 and inter_y > y2
+
+				range1 = inter_y >= y3-1 and inter_y <= y4+1 and inter_x >= x3-1 and inter_x <= x4+1
+
 				if pos1 or pos2 or pos3 or pos4:
-					if new_dist < distance_centre and inter_y >= y3-1 and inter_y <= y4+1:
+					if new_dist < distance_centre and range1:
 						distance_centre = new_dist
 						p2 = inter
-				# print("intersection", inter_x, inter_y)
 		pygame.draw.line(screen, WHITE, centre_voiture, p2, 2)
 		pygame.draw.rect(screen, BLUE, (p2[0], p2[1], 5, 5))
 
