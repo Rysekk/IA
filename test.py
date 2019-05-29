@@ -179,6 +179,7 @@ while not game_over:
 
 		elif event.type == pygame.JOYAXISMOTION:
 			if event.axis == 0:
+				print(event.value)
 				if en_haut is True:
 					if event.value < -0.001:
 						a_droite = True
