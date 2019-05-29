@@ -6,6 +6,10 @@ WIDTH = 1200
 HEIGHT = 700
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 
+#manette
+
+intensité = 2
+
 
 #couleur
 R = 254
@@ -16,7 +20,7 @@ BLUE = (0,0,255)
 GREEN = (0,255,0)
 BLACK = (0,0,0)
 WHITE = (255,255,255)
-ORANGE = (255,255,0)
+YELLOW = (255,255,100)
 GREY = (120,120,120)
 BG_COLOR = GREY
 
@@ -41,7 +45,7 @@ voiture_largeur = 25
 voiture_longueur = 50
 game_over = False
 distance_vision = 1200
-nb_angle_vision = 20
+nb_angle_vision = 4
 speed = 2
 rayon = sqrt(((voiture_longueur/2) * (voiture_longueur/2)) + ((voiture_largeur/2) * (voiture_largeur/2)))
 
@@ -178,11 +182,14 @@ while not game_over:
 				if en_haut is True:
 					if event.value < -0.001:
 						a_droite = True
+						intensité = -envent.value*2
 					elif event.value > 0.001:
 						a_gauche = True
+						intensité = envent.value*2
 					else:
 						a_droite = False
 						a_gauche = False
+						intensité = 2
 		elif event.type == pygame.JOYHATMOTION:
 			if event.value == (-1,0):
 				a_droite = True
@@ -287,7 +294,7 @@ while not game_over:
 						distance_centre = new_dist
 						p2 = inter
 
-		pygame.draw.line(screen, WHITE, centre_voiture, p2, 2)
+		pygame.draw.line(screen, YELLOW, centre_voiture, p2, 2)
 		pygame.draw.rect(screen, GREEN, (p2[0], p2[1], 5, 5))
 
 
@@ -307,10 +314,10 @@ while not game_over:
 
 	# action selon les touches appuiyé
 	if a_droite is True:
-		angle = (angle-2)%360
+		angle = (angle - intensité)%360
 		voiture_tourne = pygame.transform.rotate(voiture, -angle-90)
 	if a_gauche is True:
-		angle = (angle+2)%360
+		angle = (angle + intensité)%360
 		voiture_tourne = pygame.transform.rotate(voiture, -angle-90)
 	if en_haut is True:
 		voiture_y += speed * sin(rad_angle)
@@ -355,8 +362,4 @@ while not game_over:
 	elif dedans_compt >0:
 		R = 0
 		V = 255
-		B = 0
-	else:
-		R = 255
-		V = 0
 		B = 0
