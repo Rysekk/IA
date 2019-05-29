@@ -69,7 +69,7 @@ liste_point_exterieur = [haut_gauche_ex, haut_droit_ex, bas_droit_ex, bas_gauche
 ligne_ext1 = [haut_gauche_ex, haut_droit_ex]
 ligne_ext2 = [haut_droit_ex, bas_droit_ex]
 ligne_ext3 = [bas_gauche_ex, bas_droit_ex]
-ligne_ext4 = [bas_gauche_ex, haut_gauche_ex]
+ligne_ext4 = [haut_gauche_ex,bas_gauche_ex]
 
 
 haut_gauche_in = (circuit_x + route_T, circuit_y + route_T)
@@ -81,7 +81,7 @@ liste_point_interieur = [haut_gauche_in, haut_droit_in, bas_droit_in, bas_gauche
 ligne_inté1 = [haut_gauche_in, haut_droit_in]
 ligne_inté2 = [haut_droit_in, bas_droit_in]
 ligne_inté3 = [bas_gauche_in, bas_droit_in]
-ligne_inté4 = [bas_gauche_in, haut_gauche_in]
+ligne_inté4 = [haut_gauche_in, bas_gauche_in]
 liste_ligne = [ligne_ext1, ligne_ext2, ligne_ext3, ligne_ext4, ligne_inté1, ligne_inté2, ligne_inté3, ligne_inté4]
 
 
@@ -248,6 +248,7 @@ while not game_over:
 		p2_x = centre_voiture[0] + cos(rad_vision+rad)*distance_vision
 		p2_y = centre_voiture[1] + sin(rad_vision+rad)*distance_vision
 		p2 = (p2_x, p2_y)
+		distance_centre = distance_vision
 		for ligne in liste_ligne :
 			x1 = voiture_x
 			y1 = voiture_y
@@ -257,7 +258,6 @@ while not game_over:
 			y3 = ligne[0][1]
 			x4 = ligne[1][0]
 			y4 = ligne[1][1]
-			distance_centre = distance_vision
 			if x2 == x1:
 				coef1 = 10000000000
 			else:
@@ -275,8 +275,14 @@ while not game_over:
 				inter_y = coef1*inter_x + ord1
 				inter = (inter_x,inter_y)
 				new_dist = sqrt((voiture_x - inter_x)*(voiture_x - inter_x) + (voiture_y - inter_y)*(voiture_y - inter_y))
-				if new_dist < distance_centre and inter_x >= x3 and inter_x <= x4 and inter_y >= y3 and inter_y <= y4:
-					p2 = inter
+				pos1 = inter_x > x1 and inter_x < x2 and inter_y > y1 and inter_y < y2
+				pos2 = inter_x < x1 and inter_x > x2 and inter_y < y1 and inter_y > y2
+				pos3 = inter_x < x1 and inter_x > x2 and inter_y > y1 and inter_y < y2
+				pos4 = inter_x > x1 and inter_x < x2 and inter_y < y1 and inter_y > y2
+				if pos1 or pos2 or pos3 or pos4:
+					if new_dist < distance_centre and inter_y >= y3-1 and inter_y <= y4+1:
+						distance_centre = new_dist
+						p2 = inter
 				# print("intersection", inter_x, inter_y)
 		pygame.draw.line(screen, WHITE, centre_voiture, p2, 2)
 		pygame.draw.rect(screen, BLUE, (p2[0], p2[1], 5, 5))
