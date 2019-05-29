@@ -40,7 +40,7 @@ voiture_pos = [100, 100]
 voiture_largeur = 25
 voiture_longueur = 50
 game_over = False
-distance_vision = 200
+distance_vision = 400
 nb_angle_vision = 10
 speed = 2
 rayon = sqrt(((voiture_longueur/2) * (voiture_longueur/2)) + ((voiture_largeur/2) * (voiture_largeur/2)))
@@ -275,10 +275,10 @@ while not game_over:
 				inter_y = coef1*inter_x + ord1
 				inter = (inter_x,inter_y)
 				new_dist = sqrt((voiture_x - inter_x)*(voiture_x - inter_x) + (voiture_y - inter_y)*(voiture_y - inter_y))
-				pos1 = inter_x > x1 and inter_x < x2 and inter_y > y1 and inter_y < y2
-				pos2 = inter_x < x1 and inter_x > x2 and inter_y < y1 and inter_y > y2
-				pos3 = inter_x < x1 and inter_x > x2 and inter_y > y1 and inter_y < y2
-				pos4 = inter_x > x1 and inter_x < x2 and inter_y < y1 and inter_y > y2
+				pos1 = inter_x >= x1 and inter_x <= x2 and inter_y >= y1 and inter_y <= y2
+				pos2 = inter_x <= x1 and inter_x >= x2 and inter_y <= y1 and inter_y >= y2
+				pos3 = inter_x <= x1 and inter_x >= x2 and inter_y >= y1 and inter_y <= y2
+				pos4 = inter_x >= x1 and inter_x <= x2 and inter_y <= y1 and inter_y >= y2
 
 				range1 = inter_y >= y3-1 and inter_y <= y4+1 and inter_x >= x3-1 and inter_x <= x4+1
 
@@ -286,8 +286,9 @@ while not game_over:
 					if new_dist < distance_centre and range1:
 						distance_centre = new_dist
 						p2 = inter
+
 		pygame.draw.line(screen, WHITE, centre_voiture, p2, 2)
-		pygame.draw.rect(screen, BLUE, (p2[0], p2[1], 5, 5))
+		pygame.draw.rect(screen, GREEN, (p2[0], p2[1], 5, 5))
 
 
 
