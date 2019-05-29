@@ -45,7 +45,7 @@ voiture_largeur = 25
 voiture_longueur = 50
 game_over = False
 distance_vision = 1200
-nb_angle_vision = 4
+liste_angle_vision = [0, 64,90,116,180]
 speed = 2
 rayon = sqrt(((voiture_longueur/2) * (voiture_longueur/2)) + ((voiture_largeur/2) * (voiture_largeur/2)))
 
@@ -249,9 +249,8 @@ while not game_over:
 
 	#vision
 	centre_voiture = (voiture_x, voiture_y)
-	for truc in range(0, nb_angle_vision+1) :
-		résolution = 180/nb_angle_vision
-		rad_vision = (truc * résolution)/ (180 / 3.14)
+	for truc in liste_angle_vision :
+		rad_vision = truc/ (180 / 3.14)
 		p2_x = centre_voiture[0] + cos(rad_vision+rad)*distance_vision
 		p2_y = centre_voiture[1] + sin(rad_vision+rad)*distance_vision
 		p2 = (p2_x, p2_y)
