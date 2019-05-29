@@ -40,8 +40,8 @@ voiture_pos = [100, 100]
 voiture_largeur = 25
 voiture_longueur = 50
 game_over = False
-distance_vision = 400
-nb_angle_vision = 10
+distance_vision = 1200
+nb_angle_vision = 20
 speed = 2
 rayon = sqrt(((voiture_longueur/2) * (voiture_longueur/2)) + ((voiture_largeur/2) * (voiture_largeur/2)))
 
