@@ -46,7 +46,7 @@ voiture_longueur = 50
 game_over = False
 distance_vision = 1200
 liste_angle_vision = [0, 64,90,116,180]
-speed = 1
+speed = 0.75
 rayon = sqrt(((voiture_longueur/2) * (voiture_longueur/2)) + ((voiture_largeur/2) * (voiture_largeur/2)))
 
 
@@ -182,14 +182,14 @@ while not game_over:
 				if en_haut is True:
 					if event.value < -0.001:
 						a_droite = True
-						intensité = -event.value*2
+						intensité = -event.value
 					elif event.value > 0.001:
 						a_gauche = True
-						intensité = event.value*2
+						intensité = event.value
 					else:
 						a_droite = False
 						a_gauche = False
-						intensité = 2
+						intensité = 1
 		elif event.type == pygame.JOYHATMOTION:
 			if event.value == (-1,0):
 				a_droite = True
