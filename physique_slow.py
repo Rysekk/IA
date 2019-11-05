@@ -1,6 +1,7 @@
 import pygame
 from math import *
 import sys
+import struct
 pygame.init()
 WIDTH = 1200
 HEIGHT = 700
@@ -8,7 +9,7 @@ screen = pygame.display.set_mode((WIDTH,HEIGHT))
 
 #manette
 
-intensité = 1
+intensité = 1.5
 
 
 #couleur
@@ -23,6 +24,7 @@ WHITE = (255,255,255)
 YELLOW = (255,255,100)
 GREY = (120,120,120)
 BG_COLOR = GREY
+font = pygame.font.SysFont("comicsansms", 30)
 
 
 #initialisation paramètre circuit
@@ -46,7 +48,7 @@ voiture_longueur = 50
 game_over = False
 distance_vision = 1200
 liste_angle_vision = [0, 64,90,116,180]
-speed = 0.75
+speed = 1.5
 rayon = sqrt(((voiture_longueur/2) * (voiture_longueur/2)) + ((voiture_largeur/2) * (voiture_largeur/2)))
 
 
@@ -295,13 +297,13 @@ while not game_over:
 
 		pygame.draw.line(screen, YELLOW, centre_voiture, p2, 2)
 		pygame.draw.rect(screen, GREEN, (p2[0], p2[1], 5, 5))
-
-
-
-
-
+		text = font.render(str(distance_centre), True, (0, 128, 0))
+		order = liste_angle_vision.index(truc)
+		screen.blit(text,(500 - text.get_width()// 2 , 300 - text.get_height()// 2 + order*text.get_height() ))
 
 	screen.blit(voiture_tourne, voiture_centre)
+
+
 	# met à jour les bailles
 	pygame.display.update()
 
