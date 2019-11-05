@@ -24,7 +24,9 @@ WHITE = (255,255,255)
 YELLOW = (255,255,100)
 GREY = (120,120,120)
 BG_COLOR = GREY
-font = pygame.font.SysFont("comicsansms", 30)
+font = pygame.font.SysFont("Times", 10)
+text_x = 10
+text_y = 10
 
 
 #initialisation paramètre circuit
@@ -297,9 +299,9 @@ while not game_over:
 
 		pygame.draw.line(screen, YELLOW, centre_voiture, p2, 2)
 		pygame.draw.rect(screen, GREEN, (p2[0], p2[1], 5, 5))
-		text = font.render(str(distance_centre), True, (0, 128, 0))
 		order = liste_angle_vision.index(truc)
-		screen.blit(text,(500 - text.get_width()// 2 , 300 - text.get_height()// 2 + order*text.get_height() ))
+		text = font.render(str(order)+' : '+str(distance_centre), True, WHITE)
+		screen.blit(text,(text_x , text_y - text.get_height()// 2 + order*text.get_height()))
 
 	screen.blit(voiture_tourne, voiture_centre)
 
